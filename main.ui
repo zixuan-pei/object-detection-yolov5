@@ -63,9 +63,9 @@
     <property name="title">
      <string>File</string>
     </property>
-    <addaction name="actionOpen_folder"/>
     <addaction name="actionOpen_image"/>
     <addaction name="actionOpen_video"/>
+    <addaction name="actionOpen_folder"/>
     <addaction name="actionSave"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
@@ -81,7 +81,16 @@
      <addaction name="actionCPU"/>
      <addaction name="actionGPU"/>
     </widget>
-    <addaction name="actionModel"/>
+    <widget class="QMenu" name="menuModel">
+     <property name="title">
+      <string>Model</string>
+     </property>
+     <addaction name="actionyolov5s"/>
+     <addaction name="actionyolov5m"/>
+     <addaction name="actionyolov5l"/>
+     <addaction name="actionyolov5x"/>
+    </widget>
+    <addaction name="menuModel"/>
     <addaction name="menuDevice"/>
    </widget>
    <widget class="QMenu" name="menuTools">
@@ -111,11 +120,6 @@
   <action name="actionExit">
    <property name="text">
     <string>Exit</string>
-   </property>
-  </action>
-  <action name="actionModel">
-   <property name="text">
-    <string>Model</string>
    </property>
   </action>
   <action name="actionCPU">
@@ -150,6 +154,41 @@
   <action name="actionTerminal">
    <property name="text">
     <string>Terminal</string>
+   </property>
+  </action>
+  <action name="actionyolov5s">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>yolov5s</string>
+   </property>
+  </action>
+  <action name="actionyolov5m">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>yolov5m</string>
+   </property>
+  </action>
+  <action name="actionyolov5l">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>yolov5l</string>
+   </property>
+  </action>
+  <action name="actionyolov5x">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>yolov5x</string>
    </property>
   </action>
  </widget>
