@@ -7,7 +7,9 @@ This program is super easy to use. You can choose images, videos and folder to r
 
 Here is a demo video:
 
-<img src="https://github.com/zixuan-pei/object-detection-yolov5/blob/master/demo.jpg" alt="alt" title="title">
+<a hrdf="https://youtu.be/8KCwZtJteKI">
+  <img src="https://github.com/zixuan-pei/object-detection-yolov5/blob/master/demo.jpg">
+</a>
 
 # Quick Start
 ### Requirement
