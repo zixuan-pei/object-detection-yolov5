@@ -177,9 +177,13 @@ def run(window,
             if hasattr(dataset, 'frame') and dataset.nf == 1:
                 window.progressBar.setValue(int(dataset.frame / dataset.frames * 100))
             # folder with video inside
-            if hasattr(dataset, 'frame') and dataset.nf > 1:
+            elif hasattr(dataset, 'frame') and dataset.nf > 1:
                 window.progressBar.setValue(
                     int(dataset.count / dataset.nf * 100 + dataset.frame / dataset.frames * 100 / dataset.nf))
+            # folder with only images inside
+            else:
+                window.progressBar.setValue(int(dataset.count / dataset.nf * 100))
+
             # Stream results
             if view_img:
                 cv2.imshow(str(p), im0)

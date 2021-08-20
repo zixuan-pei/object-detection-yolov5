@@ -21,23 +21,10 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="1" column="0" colspan="3">
-     <widget class="QGraphicsView" name="graphicsView">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="dragMode">
-       <enum>QGraphicsView::NoDrag</enum>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="2">
-     <widget class="QPushButton" name="pushButton">
+    <item row="0" column="1">
+     <widget class="QPushButton" name="pushButton_2">
       <property name="text">
-       <string>Run</string>
+       <string>Change saving path</string>
       </property>
      </widget>
     </item>
@@ -48,10 +35,30 @@
       </property>
      </widget>
     </item>
-    <item row="0" column="1">
-     <widget class="QPushButton" name="pushButton_2">
+    <item row="0" column="2">
+     <widget class="QPushButton" name="pushButton">
       <property name="text">
-       <string>Change saving path</string>
+       <string>Run</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="3">
+     <widget class="QPushButton" name="pushButton_3">
+      <property name="text">
+       <string>Result</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0" colspan="4">
+     <widget class="QGraphicsView" name="graphicsView">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="dragMode">
+       <enum>QGraphicsView::NoDrag</enum>
       </property>
      </widget>
     </item>
@@ -99,6 +106,7 @@
     </widget>
     <addaction name="menuModel"/>
     <addaction name="menuDevice"/>
+    <addaction name="actionSaving_Path"/>
    </widget>
    <widget class="QMenu" name="menuTools">
     <property name="title">
@@ -121,7 +129,7 @@
   </action>
   <action name="actionSave">
    <property name="text">
-    <string>Save</string>
+    <string>Open webcam</string>
    </property>
   </action>
   <action name="actionExit">
@@ -196,6 +204,11 @@
    </property>
    <property name="text">
     <string>yolov5x</string>
+   </property>
+  </action>
+  <action name="actionSaving_Path">
+   <property name="text">
+    <string>Saving Path</string>
    </property>
   </action>
  </widget>
