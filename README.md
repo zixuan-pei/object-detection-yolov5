@@ -21,7 +21,7 @@ pip3 install torch==1.9.0+cu111 torchvision==0.10.0+cu111 torchaudio===0.9.0 -f 
 ```
 git clone https://github.com/zixuan-pei/object-detection-yolov5
 cd object-detection-yolov5
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 ```
 ### Run
 ```
