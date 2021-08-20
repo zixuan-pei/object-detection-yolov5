@@ -10,6 +10,8 @@ Here is a demo video:
 <img src="https://github.com/zixuan-pei/object-detection-yolov5/blob/master/demo.jpg" alt="alt" title="title">
 
 # Quick Start
+### Requirement
+[Python>=3.6.0](https://www.python.org/) and pip is required with all [requirements.txt](https://github.com/zixuan-pei/object-detection-yolov5/blob/master/requirements.txt) installed including PyTorch>=1.7
 ### Install
 ```
 git clone https://github.com/zixuan-pei/object-detection-yolov5
@@ -18,5 +20,5 @@ pip install -r requirements.txt
 ```
 ### Run
 ```
-python object_detection.py
+python3 Object_Detection.py
 ```
