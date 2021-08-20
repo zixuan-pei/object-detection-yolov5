@@ -5,11 +5,9 @@ It provides a GUI so that you do not need to know yolov5 code to generate detect
 
 This program is super easy to use. You can choose images, videos and folder to run. Any directory can be chosen as you like to save the output files. You can directly click the Result button to see or the outputs.
 
-Here is a demo video:
+Here is a demo [video](https://youtu.be/8KCwZtJteKI):
 
-<a hrdf="https://youtu.be/8KCwZtJteKI">
-  <img src="https://github.com/zixuan-pei/object-detection-yolov5/blob/master/demo.jpg">
-</a>
+<img src="demo.jpg">
 
 # Quick Start
 ### Requirement
