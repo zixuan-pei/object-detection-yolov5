@@ -16,6 +16,8 @@ from PyQt5.QtWidgets import *
 
 
 class Ui_Dialog(QDialog):
+    terminal_signal = pyqtSignal(str)
+
     def __init__(self):
         super().__init__()
         self.setupUi(self)
@@ -30,8 +32,12 @@ class Ui_Dialog(QDialog):
 
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
-        self.textBrowser.setText("Hello world!")
+        self.textBrowser.setText("This is a terminal showing output of this program:")
+        self.terminal_signal.connect(self.add_line)
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
+
+    def add_line(self, s):
+        self.textBrowser.append(s)
