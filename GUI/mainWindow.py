@@ -10,6 +10,7 @@ import os
 import sys
 from pathlib import Path
 import cv2
+import torch.cuda
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
@@ -24,7 +25,7 @@ class Ui_MainWindow(QMainWindow):
         super().__init__()
         self.path = 'TestImages/bus.jpg'
         self.savepath = 'runs'
-        self.device = 'cpu'
+        self.device = '0' if torch.cuda.is_available() else 'cpu'
         self.model = 'yolov5s.pt'
         self.setupUi(self)
         self.retranslateUi(self)
@@ -90,10 +91,11 @@ class Ui_MainWindow(QMainWindow):
         self.actionExit.setObjectName("actionExit")
         self.actionCPU = QtWidgets.QAction(MainWindow)
         self.actionCPU.setCheckable(True)
-        self.actionCPU.setChecked(True)
+        self.actionCPU.setChecked(not torch.cuda.is_available())
         self.actionCPU.setObjectName("actionCPU")
         self.actionGPU = QtWidgets.QAction(MainWindow)
         self.actionGPU.setCheckable(True)
+        self.actionGPU.setChecked(torch.cuda.is_available())
         self.actionGPU.setObjectName("actionGPU")
         self.actionOpen_folder = QtWidgets.QAction(MainWindow)
         self.actionOpen_folder.setObjectName("actionOpen_folder")
@@ -195,7 +197,6 @@ class Ui_MainWindow(QMainWindow):
     def change_save(self):
         self.save_thread = Change_save(self)
         self.save_thread.run()
-        # self.savepath = tkinter.filedialog.askdirectory()
 
     def run(self):
         self.run_thread = Run(self)
@@ -219,11 +220,11 @@ class Ui_MainWindow(QMainWindow):
 
     def model_l(self):
         self.l_thread = Model_l(self)
-        self.l_thread.start()
+        self.l_thread.run()
 
     def model_x(self):
         self.x_thread = Model_x(self)
-        self.x_thread.start()
+        self.x_thread.run()
 
     def show_terminal(self):
         # self.terminal_thread = Show_terminal()
@@ -241,6 +242,7 @@ class Run(QThread):
         self.main_window = main_window
 
     def run(self):
+        print(self.main_window.device)
         # get save path
         p = Path(self.main_window.path)
         s = self.main_window.savepath + '/' + p.name
@@ -255,12 +257,11 @@ class Run(QThread):
         elif s.endswith(".mp4"):
             capture = cv2.VideoCapture(s)
             if capture.isOpened():
-                while True:
+                # while True:
                     ret, img = capture.read()
-                    if not ret:
-                        break
+                    # if not ret:
+                    #     break
                     show_img(img, self.main_window)
-                print('video is done')
             else:
                 print('video open fail')
         # show the first img or first frame of the first video in a directory
@@ -270,16 +271,14 @@ class Run(QThread):
             if first_file.endswith(".mp4"):
                 capture = cv2.VideoCapture(first_file)
                 if capture.isOpened():
-                    while True:
+                    # while True:
                         ret, img = capture.read()
-                        if not ret:
-                            break
+                        # if not ret:
+                        #     break
                         show_img(img, self.main_window)
-                    print('video is done')
                 else:
                     print('video open fail')
             else:
-                print("I am here.")
                 img = cv2.imread(first_file)  # 读取图像
                 show_img(img, self.main_window)
 
@@ -320,10 +319,10 @@ class Open_folder(QThread):
         if first_file.endswith(".mp4"):
             capture = cv2.VideoCapture(first_file)
             if capture.isOpened():
-                while True:
+                # while True:
                     ret, img = capture.read()
-                    if not ret:
-                        break
+                    # if not ret:
+                    #     break
                     show_img(img, self.main_window)
             else:
                 print('video open fail')
@@ -344,10 +343,10 @@ class Open_video(QThread):
         # show the video
         capture = cv2.VideoCapture(self.main_window.path)
         if capture.isOpened():
-            while True:
+            # while True:
                 ret, img = capture.read()
-                if not ret:
-                    break
+                # if not ret:
+                #     break
                 show_img(img, self.main_window)
         else:
             print('video open fail')
@@ -370,7 +369,7 @@ class Set_cpu(QThread):
         self.main_window = main_window
 
     def run(self):
-        self.main_window.device = 'CPU'
+        self.main_window.device = 'cpu'
         self.main_window.actionGPU.setChecked(False)
 
 
