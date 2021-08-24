@@ -59,6 +59,7 @@ def run(window,
         hide_conf=False,  # hide confidences
         half=False,  # use FP16 half-precision inference
         ):
+    # sys.stdout = open('log_tmp.txt')
     save_img = not nosave and not source.endswith('.txt')  # save inference images
     webcam = source.isnumeric() or source.endswith('.txt') or source.lower().startswith(
         ('rtsp://', 'rtmp://', 'http://', 'https://'))
@@ -106,6 +107,8 @@ def run(window,
     if pt and device.type != 'cpu':
         model(torch.zeros(1, 3, imgsz, imgsz).to(device).type_as(next(model.parameters())))  # run once
     t0 = time.time()
+    out = sys.stdout
+    sys.stdout = open('utils/log_tmp.txt', 'w')
     for path, img, im0s, vid_cap in dataset:
         if pt:
             img = torch.from_numpy(img).to(device)
@@ -188,9 +191,12 @@ def run(window,
                 # window.progressBar.setValue(int(dataset.count / dataset.nf * 100))
                 window.progress.emit(int(dataset.count / dataset.nf * 100))
 
-            # out_file = sys.stdout
-            # lines = out_file.read()
-            window.terminal.terminal_signal.emit(str(dataset.frame))
+            sys.stdout.flush()
+            sys.stdout.close()
+            sys.stdout = out
+            out = open('utils/log_tmp.txt', 'r')
+            lines = out.readline()
+            window.terminal.terminal_signal.emit(lines)
 
             # Stream results
             if view_img:
@@ -216,15 +222,34 @@ def run(window,
                         vid_writer[i] = cv2.VideoWriter(save_path, cv2.VideoWriter_fourcc(*'mp4v'), fps, (w, h))
                     vid_writer[i].write(im0)
 
+            out = sys.stdout
+            sys.stdout = open('utils/log_tmp.txt', 'w')
+
     if save_txt or save_img:
         s = f"\n{len(list(save_dir.glob('labels/*.txt')))} labels saved to {save_dir / 'labels'}" if save_txt else ''
         print(f"Results saved to {colorstr('bold', save_dir)}{s}")
+        sys.stdout.flush()
+        sys.stdout.close()
+        sys.stdout = out
+        out = open('utils/log_tmp.txt', 'r')
+        line = out.readline()
+        out.close()
+        window.terminal.terminal_signal.emit(line)
 
     if update:
         strip_optimizer(weights)  # update model (to fix SourceChangeWarning)
     # window.progressBar.setValue(100)
     window.progress.emit(100)
+    out = sys.stdout
+    sys.stdout = open('utils/log_tmp.txt', 'w')
     print(f'Done. ({time.time() - t0:.3f}s)')
+    sys.stdout.flush()
+    sys.stdout.close()
+    sys.stdout = out
+    out = open('utils/log_tmp.txt', 'r')
+    line = out.readline()
+    out.close()
+    window.terminal.terminal_signal.emit(line)
 
 
 def parse_opt():
