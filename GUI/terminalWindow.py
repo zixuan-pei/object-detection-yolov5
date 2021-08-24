@@ -10,7 +10,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QDialog, QApplication
 
 
 class Ui_Dialog(QDialog):
@@ -18,12 +18,14 @@ class Ui_Dialog(QDialog):
 
     def __init__(self):
         super().__init__()
+        self.height = QApplication.desktop().screenGeometry().height()
+        self.width = QApplication.desktop().screenGeometry().width()
         self.setupUi(self)
         self.retranslateUi(self)
 
     def setupUi(self, Dialog):
         Dialog.setObjectName("Terminal")
-        Dialog.resize(1440, 810)
+        Dialog.resize(int(self.width * 2 / 3), int(self.height * 2 / 3))
         self.gridLayout = QtWidgets.QGridLayout(Dialog)
         self.gridLayout.setObjectName("gridLayout")
         self.textBrowser = QtWidgets.QTextBrowser(Dialog)

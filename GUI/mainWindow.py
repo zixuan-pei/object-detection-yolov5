@@ -22,6 +22,8 @@ class Ui_MainWindow(QMainWindow):
 
     def __init__(self):
         super().__init__()
+        self.height = QApplication.desktop().screenGeometry().height()
+        self.width = QApplication.desktop().screenGeometry().width()
         self.path = 'TestImages/bus.jpg'
         self.savepath = 'runs'
         self.device = '0' if torch.cuda.is_available() else 'cpu'
@@ -32,7 +34,7 @@ class Ui_MainWindow(QMainWindow):
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("Object detection")
-        MainWindow.resize(1600, 900)
+        MainWindow.resize(int(self.width * 3 / 4), int(self.height * 3 / 4))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
