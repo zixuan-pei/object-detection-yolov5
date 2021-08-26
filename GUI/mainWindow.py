@@ -13,6 +13,7 @@ from PyQt5.QtWidgets import *
 
 import detect
 from GUI import terminalWindow
+from utils.datasets import IMG_FORMATS, VID_FORMATS
 
 
 class Ui_MainWindow(QMainWindow):
@@ -194,13 +195,15 @@ class Ui_MainWindow(QMainWindow):
         self.progressBar.setValue(val)
 
     def open_img(self):
-        file_name = QFileDialog.getOpenFileName(self, 'Choose file', './', 'image(*.jpg , *.png)')
+        file_name = QFileDialog.getOpenFileName(self, 'Choose file', './', 'image(*.jpg , *.png, *.bmp, *.jpeg, '
+                                                                           '*.tif, *.tiff, *.dng, *.webp, *.mpo)')
         image_path = file_name[0]
         self.path = image_path
         self.display_signal.emit(self.path)
 
     def open_video(self):
-        file_name = QFileDialog.getOpenFileName(self, 'Choose file', './', 'video(*.mp4)')
+        file_name = QFileDialog.getOpenFileName(self, 'Choose file', './', 'video(*.mp4, *.mov, *.avi, *.mpg, *.mpeg, '
+                                                                           '*.m4v, *.wmv, *.mkv)')
         self.path = file_name[0]
         print(self.path)
         self.display_signal.emit(self.path)
@@ -209,7 +212,12 @@ class Ui_MainWindow(QMainWindow):
         p = QFileDialog.getExistingDirectory(self, 'Choose folder')
         # Check file type inside folder
         for files in os.listdir(p):
-            if not files.endswith(".mp4") and not files.endswith(".jpg") and not files.endswith(".png"):
+            if not (files.endswith('.jpg') or files.endswith('.png') or files.endswith('.bmp') or
+                    files.endswith('.jpeg') or files.endswith('.tif') or files.endswith('.tiff') or
+                    files.endswith('.dng') or files.endswith('.webp') or files.endswith('.mpo') or
+                    files.endswith('.mp4') or files.endswith('.mov') or files.endswith('.avi') or
+                    files.endswith('.mpg') or files.endswith('.mpeg') or files.endswith('.m4v') or
+                    files.endswith('.wmv') or files.endswith('.mkv')):
                 # show error message and return
                 s = "errorMessage/ERROR_1.jpg"
                 self.display_signal.emit(s)
@@ -322,7 +330,6 @@ class Run(QThread):
         else:
             s = self.main_window.savepath + '/' + p.name
         self.main_window.display_signal.emit(s)
-
 
 
 class Video_play(QThread):
