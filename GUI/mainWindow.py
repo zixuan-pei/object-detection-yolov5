@@ -1,5 +1,6 @@
 import os
 import sys
+import threading
 import time
 from pathlib import Path
 import cv2
@@ -17,6 +18,7 @@ from GUI import terminalWindow
 class Ui_MainWindow(QMainWindow):
     progress = pyqtSignal(int)
     display_signal = pyqtSignal(str)
+    stop_signal = pyqtSignal()
 
     # next_frame = pyqtSignal(numpy.ndarray)
 
@@ -161,7 +163,7 @@ class Ui_MainWindow(QMainWindow):
         self.progress.connect(self.updateProgressBar)
         self.display_signal.connect(self.display)
         self.actionOpen_webcam.triggered.connect(self.open_webcam)
-        # self.next_frame.connect(show_img)
+        self.actionExit.triggered.connect(self.stop_run)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -231,11 +233,11 @@ class Ui_MainWindow(QMainWindow):
             capture = cv2.VideoCapture(path)
             if capture.isOpened():
                 # while True:
-                    ret, img = capture.read()
-                    # if not ret:
-                        # break
-                    show_img(img, self)
-                    # time.sleep(0.2)
+                ret, img = capture.read()
+                # if not ret:
+                # break
+                show_img(img, self)
+                # time.sleep(0.2)
             else:
                 print('video open fail')
             # TODO: show each frame while running (optional)
@@ -246,6 +248,10 @@ class Ui_MainWindow(QMainWindow):
     def run(self):
         self.run_thread = Run(self)
         self.run_thread.start()
+
+    def stop_run(self):
+        self.run_thread.terminate()
+        # self.run_thread.stop()
 
     def setCPU(self):
         self.device = 'cpu'
@@ -294,13 +300,21 @@ class Run(QThread):
     def __init__(self, main_window):
         super().__init__()
         self.main_window = main_window
+        # self._stop_event = threading.Event()
+
+    # def stop(self):
+    #     self._stop_event.set()
 
     def run(self):
         # get save path
         p = Path(self.main_window.path)
         # run detect
-        detect.run(window=self.main_window, source=self.main_window.path, weights=self.main_window.model,
-                   device=self.main_window.device, project=self.main_window.savepath)
+        if self.main_window == '0':
+            detect.run(window=self.main_window, source=self.main_window.path, weights=self.main_window.model,
+                       device=self.main_window.device, project=self.main_window.savepath, nosave=True)
+        else:
+            detect.run(window=self.main_window, source=self.main_window.path, weights=self.main_window.model,
+                       device=self.main_window.device, project=self.main_window.savepath)
         if os.path.isdir(p):
             # show the first img or first frame of the first video in a directory
             first_file = os.listdir(self.main_window.path)[0]
@@ -308,6 +322,7 @@ class Run(QThread):
         else:
             s = self.main_window.savepath + '/' + p.name
         self.main_window.display_signal.emit(s)
+
 
 
 class Video_play(QThread):
