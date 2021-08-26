@@ -176,20 +176,20 @@ def run(window,
             # Print time (inference + NMS)
             print(f'{s}Done. ({t2 - t1:.3f}s)')
 
-            # video, show progressBar by frame / frames
-            if hasattr(dataset, 'frame') and dataset.nf == 1:
-                # window.progressBar.setValue(int(dataset.frame / dataset.frames * 100))
-                window.progress.emit(int(dataset.frame / dataset.frames * 100))
-            # folder with video inside
-            elif hasattr(dataset, 'frame') and dataset.nf > 1:
-                # window.progressBar.setValue(
-                #     int(dataset.count / dataset.nf * 100 + dataset.frame / dataset.frames * 100 / dataset.nf))
-                window.progress.emit(
-                    int(dataset.count / dataset.nf * 100 + dataset.frame / dataset.frames * 100 / dataset.nf))
-            # folder with only images inside
-            else:
-                # window.progressBar.setValue(int(dataset.count / dataset.nf * 100))
-                window.progress.emit(int(dataset.count / dataset.nf * 100))
+            if not webcam:
+                # video, show progressBar by frame / frames
+                if hasattr(dataset, 'frame') and dataset.nf == 1:
+                    # window.progressBar.setValue(int(dataset.frame / dataset.frames * 100))
+                    window.progress.emit(int(dataset.frame / dataset.frames * 100))
+                # folder with video inside
+                elif hasattr(dataset, 'frame') and dataset.nf > 1:
+                    # window.progressBar.setValue(
+                    #     int(dataset.count / dataset.nf * 100 + dataset.frame / dataset.frames * 100 / dataset.nf))
+                    window.progress.emit(
+                        int(dataset.count / dataset.nf * 100 + dataset.frame / dataset.frames * 100 / dataset.nf))
+                # folder with only images inside
+                else:
+                    window.progress.emit(int(dataset.count / dataset.nf * 100))
 
             sys.stdout.flush()
             sys.stdout.close()
@@ -238,8 +238,9 @@ def run(window,
 
     if update:
         strip_optimizer(weights)  # update model (to fix SourceChangeWarning)
-    # window.progressBar.setValue(100)
+
     window.progress.emit(100)
+
     out = sys.stdout
     sys.stdout = open('utils/log_tmp.txt', 'w')
     print(f'Done. ({time.time() - t0:.3f}s)')

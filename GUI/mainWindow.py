@@ -87,8 +87,8 @@ class Ui_MainWindow(QMainWindow):
         self.actionOpen_image = QtWidgets.QAction(MainWindow)
         self.actionOpen_image.setCheckable(False)
         self.actionOpen_image.setObjectName("actionOpen_image")
-        self.actionSave = QtWidgets.QAction(MainWindow)
-        self.actionSave.setObjectName("actionSave")
+        self.actionOpen_webcam = QtWidgets.QAction(MainWindow)
+        self.actionOpen_webcam.setObjectName("actionSave")
         self.actionExit = QtWidgets.QAction(MainWindow)
         self.actionExit.setObjectName("actionExit")
         self.actionCPU = QtWidgets.QAction(MainWindow)
@@ -123,7 +123,7 @@ class Ui_MainWindow(QMainWindow):
         self.menuMain.addAction(self.actionOpen_image)
         self.menuMain.addAction(self.actionOpen_video)
         self.menuMain.addAction(self.actionOpen_folder)
-        self.menuMain.addAction(self.actionSave)
+        self.menuMain.addAction(self.actionOpen_webcam)
         self.menuMain.addSeparator()
         self.menuMain.addAction(self.actionExit)
         self.menuDevice.addAction(self.actionCPU)
@@ -160,6 +160,7 @@ class Ui_MainWindow(QMainWindow):
         self.actionSaving_Path.triggered.connect(self.change_save)
         self.progress.connect(self.updateProgressBar)
         self.display_signal.connect(self.display)
+        self.actionOpen_webcam.triggered.connect(self.open_webcam)
         # self.next_frame.connect(show_img)
 
     def retranslateUi(self, MainWindow):
@@ -174,7 +175,7 @@ class Ui_MainWindow(QMainWindow):
         self.menuModel.setTitle(_translate("Object detection", "Model"))
         self.menuTools.setTitle(_translate("Object detection", "Tools"))
         self.actionOpen_image.setText(_translate("Object detection", "Open image"))
-        self.actionSave.setText(_translate("Object detection", "Open webcam"))
+        self.actionOpen_webcam.setText(_translate("Object detection", "Open webcam"))
         self.actionExit.setText(_translate("Object detection", "Exit"))
         self.actionCPU.setText(_translate("Object detection", "CPU"))
         self.actionGPU.setText(_translate("Object detection", "GPU"))
@@ -217,6 +218,9 @@ class Ui_MainWindow(QMainWindow):
         s = self.path + '/' + first_file
         self.display_signal.emit(s)
 
+    def open_webcam(self):
+        self.path = '0'
+
     def display(self, path):
         if path.endswith(".jpg") or path.endswith(".png") or path.endswith(".jpeg"):
             img = cv2.imread(path)
@@ -237,7 +241,7 @@ class Ui_MainWindow(QMainWindow):
             # TODO: show each frame while running (optional)
 
     def change_save(self):
-        self.savepath = QFileDialog.getExistingDirectory(self.main_window, 'Choose save path')
+        self.savepath = QFileDialog.getExistingDirectory(self, 'Choose save path')
 
     def run(self):
         self.run_thread = Run(self)
